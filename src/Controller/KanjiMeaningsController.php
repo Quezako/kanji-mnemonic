@@ -1,7 +1,8 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
+// use App\Controller\AppController;
+use Rest\Controller\RestController;
 
 /**
  * KanjiMeanings Controller
@@ -10,7 +11,7 @@ use App\Controller\AppController;
  *
  * @method \App\Model\Entity\KanjiMeaning[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class KanjiMeaningsController extends AppController
+class KanjiMeaningsController extends RestController
 {
 
     /**
