@@ -1,0 +1,107 @@
+<?php
+namespace App\Controller;
+
+use App\Controller\AppController;
+
+/**
+ * KanjiReadings Controller
+ *
+ * @property \App\Model\Table\KanjiReadingsTable $KanjiReadings
+ *
+ * @method \App\Model\Entity\KanjiReading[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ */
+class KanjiReadingsController extends AppController
+{
+
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function index()
+    {
+        $kanjiReadings = $this->paginate($this->KanjiReadings);
+
+        $this->set(compact('kanjiReadings'));
+    }
+
+    /**
+     * View method
+     *
+     * @param string|null $id Kanji Reading id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+        $kanjiReading = $this->KanjiReadings->get($id, [
+            'contain' => []
+        ]);
+
+        $this->set('kanjiReading', $kanjiReading);
+    }
+
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function add()
+    {
+        $kanjiReading = $this->KanjiReadings->newEntity();
+        if ($this->request->is('post')) {
+            $kanjiReading = $this->KanjiReadings->patchEntity($kanjiReading, $this->request->getData());
+            if ($this->KanjiReadings->save($kanjiReading)) {
+                $this->Flash->success(__('The kanji reading has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The kanji reading could not be saved. Please, try again.'));
+        }
+        $this->set(compact('kanjiReading'));
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Kanji Reading id.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+        $kanjiReading = $this->KanjiReadings->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $kanjiReading = $this->KanjiReadings->patchEntity($kanjiReading, $this->request->getData());
+            if ($this->KanjiReadings->save($kanjiReading)) {
+                $this->Flash->success(__('The kanji reading has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The kanji reading could not be saved. Please, try again.'));
+        }
+        $this->set(compact('kanjiReading'));
+    }
+
+    /**
+     * Delete method
+     *
+     * @param string|null $id Kanji Reading id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $kanjiReading = $this->KanjiReadings->get($id);
+        if ($this->KanjiReadings->delete($kanjiReading)) {
+            $this->Flash->success(__('The kanji reading has been deleted.'));
+        } else {
+            $this->Flash->error(__('The kanji reading could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+}
