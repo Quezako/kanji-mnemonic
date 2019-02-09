@@ -17,6 +17,7 @@
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('reference') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('hanzi') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -25,6 +26,7 @@
             <tr>
                 <td><?= $this->Number->format($alike->id) ?></td>
                 <td><?= $this->Number->format($alike->reference) ?></td>
+                <td><?= h($alike->hanzi) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $alike->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $alike->id]) ?>

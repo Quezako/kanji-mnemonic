@@ -16,6 +16,7 @@
         <legend><?= __('Add Alike') ?></legend>
         <?php
             echo $this->Form->control('reference');
+            echo $this->Form->control('hanzi');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

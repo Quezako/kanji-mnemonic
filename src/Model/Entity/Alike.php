@@ -8,7 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $reference
- * @property string|resource $hanzi
+ * @property string $hanzi
  */
 class Alike extends Entity
 {
