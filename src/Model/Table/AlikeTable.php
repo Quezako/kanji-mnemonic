@@ -54,6 +54,8 @@ class AlikeTable extends Table
             ->allowEmptyString('reference', false);
 
         $validator
+            ->scalar('hanzi')
+            ->maxLength('hanzi', 4)
             ->requirePresence('hanzi', 'create')
             ->allowEmptyString('hanzi', false);
 

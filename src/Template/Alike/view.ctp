@@ -17,6 +17,10 @@
     <h3><?= h($alike->id) ?></h3>
     <table class="vertical-table">
         <tr>
+            <th scope="row"><?= __('Hanzi') ?></th>
+            <td><?= h($alike->hanzi) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($alike->id) ?></td>
         </tr>

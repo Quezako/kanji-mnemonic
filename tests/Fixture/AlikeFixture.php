@@ -26,7 +26,7 @@ class AlikeFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'reference' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'hanzi' => ['type' => 'binary', 'length' => 255, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
+        'hanzi' => ['type' => 'string', 'length' => 4, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_indexes' => [
             'references' => ['type' => 'index', 'columns' => ['reference'], 'length' => []],
         ],
@@ -52,7 +52,7 @@ class AlikeFixture extends TestFixture
             [
                 'id' => 1,
                 'reference' => 1,
-                'hanzi' => 'Lorem ipsum dolor sit amet'
+                'hanzi' => 'Lo'
             ],
         ];
         parent::init();
