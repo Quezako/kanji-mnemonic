@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
+// use App\Controller\AppController;
 use Rest\Controller\RestController;
 
 /**
@@ -27,17 +27,17 @@ class ChmnController extends RestController
 		$kanji = $this->request->query('kanji');
 		$latin = $this->request->query('latin');
 		//Hanzi	Simplified	Mnemonics	Alike	Meaning	Reference
-		
+
 		$conditions = [];
-		
+
 		if (!empty($hanzi)) {
 			$conditions[] = ['hanzi LIKE' => "%$hanzi%"];
 		}
-		
+
 		if (!empty($meaning)) {
 			$conditions[] = ['meaning LIKE' => "%$meaning%"];
 		}
-		
+
 		if (!empty($kanji)) {
 			$conditions[] = [
 				'OR' => [
