@@ -22,14 +22,18 @@ class ChmnController extends RestController
      */
     public function index()
     {
+		$mine = $this->request->query('mine');
 		$hanzi = $this->request->query('hanzi');
 		$meaning = $this->request->query('meaning');
 		$kanji = $this->request->query('kanji');
 		$latin = $this->request->query('latin');
-		//Hanzi	Simplified	Mnemonics	Alike	Meaning	Reference
+		// Simplified Mnemonics Alike Reference
 
 		$conditions = [];
 
+		if (!empty($mine)) {
+			$conditions[] = ['mine =' => $mine];
+		}
 		if (!empty($hanzi)) {
 			$conditions[] = ['hanzi LIKE' => "%$hanzi%"];
 		}
