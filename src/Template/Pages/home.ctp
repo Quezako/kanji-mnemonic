@@ -22,9 +22,11 @@ use Cake\Http\Exception\NotFoundException;
 $this->layout = false;
 
 if (!Configure::read('debug')) :
-    throw new NotFoundException(
-        'Please replace src/Template/Pages/home.ctp with your own version or re-enable debug mode.'
-    );
+    // throw new NotFoundException(
+    //     'Please replace src/Template/Pages/home.ctp with your own version or re-enable debug mode.'
+    // );
+    echo "Available APIs: chmn, alike, kanji, kanji_codes, kanji_meanings, kanji_radicals, kanji_readings.";
+    die;
 endif;
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';

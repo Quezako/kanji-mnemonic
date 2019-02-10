@@ -14,6 +14,9 @@
  */
 namespace App\Controller;
 
+header("Access-Control-Allow-Origin: http://quezako.com");
+header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 
