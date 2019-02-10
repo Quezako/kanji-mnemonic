@@ -21,6 +21,14 @@ class KanjiController extends RestController
      */
     public function index()
     {
+        $conditions = [];
+
+        foreach ($this->request->query as $column => $value) {
+            if (in_array($column, $this->Chmn->schema()->columns())) {
+                $conditions[] = ["$column LIKE" => "%$value%"];
+            }
+        }
+
         $kanji = $this->paginate($this->Kanji);
 
         $this->set(compact('kanji'));

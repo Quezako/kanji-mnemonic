@@ -21,6 +21,14 @@ class AlikeController extends RestController
      */
     public function index()
     {
+        $conditions = [];
+
+        foreach ($this->request->query as $column => $value) {
+            if (in_array($column, $this->Chmn->schema()->columns())) {
+                $conditions[] = ["$column LIKE" => "%$value%"];
+            }
+        }
+
         $alike = $this->paginate($this->Alike);
 
         $this->set(compact('alike'));
