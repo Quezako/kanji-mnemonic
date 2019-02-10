@@ -21,6 +21,14 @@ class KanjiRadicalsController extends RestController
      */
     public function index()
     {
+        $conditions = [];
+
+        foreach ($this->request->query as $column => $value) {
+            if (in_array($column, $this->Chmn->schema()->columns())) {
+                $conditions[] = ["$column LIKE" => "%$value%"];
+            }
+        }
+
         $this->paginate = [
             'contain' => ['Radicals']
         ];

@@ -22,44 +22,14 @@ class ChmnController extends RestController
      */
     public function index()
     {
-		$mine = $this->request->query('mine');
-		$hanzi = $this->request->query('hanzi');
-		$meaning = $this->request->query('meaning');
-		$kanji = $this->request->query('kanji');
-		$latin = $this->request->query('latin');
-		// Simplified Mnemonics Alike Reference
+        $conditions = [];
 
-		$conditions = [];
+        foreach ($this->request->query as $column => $value) {
+            if (in_array($column, $this->Chmn->schema()->columns())) {
+                $conditions[] = ["$column LIKE" => "%$value%"];
+            }
+        }
 
-		if (!empty($mine)) {
-			$conditions[] = ['mine =' => $mine];
-		}
-		if (!empty($hanzi)) {
-			$conditions[] = ['hanzi LIKE' => "%$hanzi%"];
-		}
-
-		if (!empty($meaning)) {
-			$conditions[] = ['meaning LIKE' => "%$meaning%"];
-		}
-
-		if (!empty($kanji)) {
-			$conditions[] = [
-				'OR' => [
-					'mnemonics LIKE' => "%$latin%",
-					'meaning LIKE' => "%$latin%",
-				]
-			];
-		}
-		if (!empty($kanji)) {
-			$conditions[] = [
-				'OR' => [
-					'hanzi LIKE' => "%$kanji%",
-					'simplified LIKE' => "%$kanji%",
-					'alike LIKE' => "%$kanji%",
-					'reference LIKE' => "%$kanji%",
-				]
-			];
-		}
 		$chmn = $this->paginate('Chmn', [
 			'conditions' => $conditions,
 		]);
