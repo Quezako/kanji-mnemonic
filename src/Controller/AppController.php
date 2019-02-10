@@ -14,7 +14,15 @@
  */
 namespace App\Controller;
 
-header("Access-Control-Allow-Origin: http://quezako.com");
+$allowedOrigins = [
+    "http://quezako.com",
+    "https://quezako.com",
+];
+
+if (in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
+}
+
 header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
 use Cake\Controller\Controller;
