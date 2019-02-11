@@ -5,13 +5,14 @@ namespace App\Controller;
 use Rest\Controller\RestController;
 
 /**
- * KanjiCodes Controller
+ * Ids Controller
  *
- * @property \App\Model\Table\KanjiCodesTable $KanjiCodes
+ * @property \App\Model\Table\IdsTable $Ids
  *
- * @method \App\Model\Entity\KanjiCode[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\Id[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class KanjiCodesController extends RestController
+// class IdsController extends AppController
+class IdsController extends RestController
 {
 
     /**
@@ -43,17 +44,17 @@ class KanjiCodesController extends RestController
     /**
      * View method
      *
-     * @param string|null $id Kanji Code id.
+     * @param string|null $id Id id.
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
-        $kanjiCode = $this->KanjiCodes->get($id, [
+        $id = $this->Ids->get($id, [
             'contain' => []
         ]);
 
-        $this->set('kanjiCode', $kanjiCode);
+        $this->set('id', $id);
     }
 
     /**
@@ -63,58 +64,58 @@ class KanjiCodesController extends RestController
      */
     public function add()
     {
-        $kanjiCode = $this->KanjiCodes->newEntity();
+        $id = $this->Ids->newEntity();
         if ($this->request->is('post')) {
-            $kanjiCode = $this->KanjiCodes->patchEntity($kanjiCode, $this->request->getData());
-            if ($this->KanjiCodes->save($kanjiCode)) {
-                $this->Flash->success(__('The kanji code has been saved.'));
+            $id = $this->Ids->patchEntity($id, $this->request->getData());
+            if ($this->Ids->save($id)) {
+                $this->Flash->success(__('The id has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The kanji code could not be saved. Please, try again.'));
+            $this->Flash->error(__('The id could not be saved. Please, try again.'));
         }
-        $this->set(compact('kanjiCode'));
+        $this->set(compact('id'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Kanji Code id.
+     * @param string|null $id Id id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
     {
-        $kanjiCode = $this->KanjiCodes->get($id, [
+        $id = $this->Ids->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $kanjiCode = $this->KanjiCodes->patchEntity($kanjiCode, $this->request->getData());
-            if ($this->KanjiCodes->save($kanjiCode)) {
-                $this->Flash->success(__('The kanji code has been saved.'));
+            $id = $this->Ids->patchEntity($id, $this->request->getData());
+            if ($this->Ids->save($id)) {
+                $this->Flash->success(__('The id has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The kanji code could not be saved. Please, try again.'));
+            $this->Flash->error(__('The id could not be saved. Please, try again.'));
         }
-        $this->set(compact('kanjiCode'));
+        $this->set(compact('id'));
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Kanji Code id.
+     * @param string|null $id Id id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $kanjiCode = $this->KanjiCodes->get($id);
-        if ($this->KanjiCodes->delete($kanjiCode)) {
-            $this->Flash->success(__('The kanji code has been deleted.'));
+        $id = $this->Ids->get($id);
+        if ($this->Ids->delete($id)) {
+            $this->Flash->success(__('The id has been deleted.'));
         } else {
-            $this->Flash->error(__('The kanji code could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The id could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

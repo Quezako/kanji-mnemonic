@@ -11,6 +11,7 @@ use Rest\Controller\RestController;
  *
  * @method \App\Model\Entity\KanjiMeaning[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
+// class KanjiMeaningsController extends AppController
 class KanjiMeaningsController extends RestController
 {
 
@@ -24,14 +25,20 @@ class KanjiMeaningsController extends RestController
         $conditions = [];
 
         foreach ($this->request->query as $column => $value) {
-            if (in_array($column, $this->Chmn->schema()->columns())) {
-                $conditions[] = ["$column LIKE" => "%$value%"];
+            if (in_array($column, $this->{$this->name}->schema()->columns())) {
+                if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
+                    $conditions[] = ["$column LIKE" => "$value%"];
+                } else {
+                    $conditions[] = ["$column =" => $value];
+                }
             }
         }
 
-        $kanjiMeanings = $this->paginate($this->KanjiMeanings);
+        ${lcfirst($this->name)} = $this->paginate($this->name, [
+			'conditions' => $conditions,
+		]);
 
-        $this->set(compact('kanjiMeanings'));
+        $this->set(compact(lcfirst($this->name)));
     }
 
     /**

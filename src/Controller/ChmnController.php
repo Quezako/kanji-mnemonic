@@ -25,16 +25,20 @@ class ChmnController extends RestController
         $conditions = [];
 
         foreach ($this->request->query as $column => $value) {
-            if (in_array($column, $this->Chmn->schema()->columns())) {
-                $conditions[] = ["$column LIKE" => "%$value%"];
+            if (in_array($column, $this->{$this->name}->schema()->columns())) {
+                if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
+                    $conditions[] = ["$column LIKE" => "$value%"];
+                } else {
+                    $conditions[] = ["$column =" => $value];
+                }
             }
         }
 
-		$chmn = $this->paginate('Chmn', [
+        ${lcfirst($this->name)} = $this->paginate($this->name, [
 			'conditions' => $conditions,
 		]);
 
-        $this->set(compact('chmn'));
+        $this->set(compact(lcfirst($this->name)));
     }
 
     /**
