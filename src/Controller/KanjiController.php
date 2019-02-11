@@ -43,7 +43,7 @@ class KanjiController extends RestController
             if ($len % 2) {
                 $value->ucs = '?';
             } else {
-                $value->ucs = iconv('UTF-16BE', 'UTF-8', hex2bin($value->ucs)) . PHP_EOL;
+                $value->ucs = iconv('UTF-16BE', 'UTF-8', hex2bin($value->ucs));
             }
 
             $label = [];
