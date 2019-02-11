@@ -37,6 +37,32 @@ class KanjiController extends RestController
 			'conditions' => $conditions,
 		]);
 
+        foreach (${lcfirst($this->name)} as $key => $value) {
+            $len = strlen($value->ucs);
+
+            if ($len % 2) {
+                $value->ucs = '?';
+            } else {
+                $value->ucs = iconv('UTF-16BE', 'UTF-8', hex2bin($value->ucs)) . PHP_EOL;
+            }
+
+            $label = [];
+            $readings_meanings = json_decode($value->data)->readings_meanings->groups;
+
+            if (isset($readings_meanings[0])) {
+                foreach ($readings_meanings[0]->reading as $key1 => $value1) {
+                    if ($key1 == 'ja_on' || $key1 == 'ja_kun') {
+                        $label[] = $key1;
+                        foreach ($value1 as $key2 => $value2) {
+                            $label[] = $value2->content;
+                        }
+                    }
+                }
+            }
+
+            $value->label = implode(', ', $label);
+        }
+
         $this->set(compact(lcfirst($this->name)));
     }
 
