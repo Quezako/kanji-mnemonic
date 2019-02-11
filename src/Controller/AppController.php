@@ -19,7 +19,7 @@ $allowedOrigins = [
     "https://quezako.com",
 ];
 
-if (in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
+if (isset($_SERVER["HTTP_ORIGIN"]) && in_array($_SERVER["HTTP_ORIGIN"], $allowedOrigins)) {
     header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
 }
 
