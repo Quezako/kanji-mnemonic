@@ -37,6 +37,18 @@ class KanjiCodesController extends RestController
 			'conditions' => $conditions,
 		]);
 
+        foreach (${lcfirst($this->name)} as $key => $value) {
+            $len = strlen($value->ucs);
+
+            if ($len % 2) {
+                $value->ucs = '?';
+            } else {
+                $value->ucs = iconv('UTF-16BE', 'UTF-8', hex2bin($value->ucs)) . PHP_EOL;
+            }
+
+            $value->label = $value->ids;
+        }
+
         $this->set(compact(lcfirst($this->name)));
     }
 

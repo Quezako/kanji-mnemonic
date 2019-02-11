@@ -27,7 +27,7 @@ class IdsController extends RestController
         foreach ($this->request->query as $column => $value) {
             if (in_array($column, $this->{$this->name}->schema()->columns())) {
                 if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
-                    $conditions[] = ["$column LIKE" => "$value%"];
+                    $conditions[] = ["$column LIKE" => "%$value%"];
                 } else {
                     $conditions[] = ["$column =" => $value];
                 }
@@ -37,6 +37,18 @@ class IdsController extends RestController
         ${lcfirst($this->name)} = $this->paginate($this->name, [
 			'conditions' => $conditions,
 		]);
+
+        foreach (${lcfirst($this->name)} as $key => $value) {
+            $len = strlen($value->ucs);
+
+            if ($len % 2) {
+                $value->ucs = '?';
+            } else {
+                $value->ucs = iconv('UTF-16BE', 'UTF-8', hex2bin($value->ucs)) . PHP_EOL;
+            }
+
+            $value->label = $value->ids;
+        }
 
         $this->set(compact(lcfirst($this->name)));
     }

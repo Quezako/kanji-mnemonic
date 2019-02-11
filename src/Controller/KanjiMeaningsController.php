@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-// use App\Controller\AppController;
+use App\Controller\AppController;
 use Rest\Controller\RestController;
 
 /**
@@ -36,7 +36,19 @@ class KanjiMeaningsController extends RestController
 
         ${lcfirst($this->name)} = $this->paginate($this->name, [
 			'conditions' => $conditions,
-		]);
+        ]);
+
+        foreach (${lcfirst($this->name)} as $key => $value) {
+            $len = strlen($value->ucs);
+
+            if ($len % 2) {
+                $value->ucs = '?';
+            } else {
+                $value->ucs = iconv('UTF-16BE', 'UTF-8', hex2bin($value->ucs)) . PHP_EOL;
+            }
+
+            $value->label = $value->meaning;
+        }
 
         $this->set(compact(lcfirst($this->name)));
     }
