@@ -27,7 +27,18 @@ class ChmnController extends RestController
         foreach ($this->request->query as $column => $value) {
             if (in_array($column, $this->{$this->name}->schema()->columns())) {
                 if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
-                    $conditions[] = ["$column LIKE" => "$value%"];
+
+                    if ($column == 'hanzi') {
+                        $conditions[] = [
+                            'OR' => [
+                                "$column LIKE" => "$value%",
+                                "simplified LIKE" => "$value%",
+                                "alike LIKE" => "$value%",
+                            ]
+                        ];
+                    } else {
+                        $conditions[] = ["$column LIKE" => "$value%"];
+                    }
                 } else {
                     $conditions[] = ["$column =" => $value];
                 }
