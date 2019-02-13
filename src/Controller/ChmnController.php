@@ -27,7 +27,6 @@ class ChmnController extends RestController
         foreach ($this->request->query as $column => $value) {
             if (in_array($column, $this->{$this->name}->schema()->columns())) {
                 if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
-
                     if ($column == 'hanzi') {
                         $conditions[] = [
                             'OR' => [
@@ -45,9 +44,19 @@ class ChmnController extends RestController
             }
         }
 
+        $conditions[] = ["mine =" => 1];
+
         ${lcfirst($this->name)} = $this->paginate($this->name, [
-			'conditions' => $conditions,
-		]);
+            'conditions' => $conditions,
+        ]);
+
+        if (!isset(${lcfirst($this->name)}->toArray()[0])) {
+            unset($conditions[1]);
+        }
+
+        ${lcfirst($this->name)} = $this->paginate($this->name, [
+            'conditions' => $conditions,
+        ]);
 
         $this->set(compact(lcfirst($this->name)));
     }
