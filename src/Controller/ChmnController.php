@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-// use App\Controller\AppController;
+use App\Controller\AppController;
 use Rest\Controller\RestController;
 
 /**
@@ -11,7 +11,7 @@ use Rest\Controller\RestController;
  *
  * @method \App\Model\Entity\Chmn[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-//class ChmnController extends AppController
+// class ChmnController extends AppController
 class ChmnController extends RestController
 {
 
@@ -30,9 +30,9 @@ class ChmnController extends RestController
                     if ($column == 'hanzi') {
                         $conditions[] = [
                             'OR' => [
-                                "$column LIKE" => "$value%",
-                                "simplified LIKE" => "$value%",
-                                "alike LIKE" => "$value%",
+                                "BINARY $column LIKE" => "$value%",
+                                "BINARY simplified LIKE" => "$value%",
+                                "BINARY alike LIKE" => "$value%",
                             ]
                         ];
                     } else {
@@ -56,6 +56,16 @@ class ChmnController extends RestController
 
         ${lcfirst($this->name)} = $this->paginate($this->name, [
             'conditions' => $conditions,
+            'fields' => [
+                'hanzi',
+                'simplified',
+                'mnemonics',
+                'alike',
+                'meaning',
+                'reference',
+                'ucs' => 'chmn.hanzi',
+                'label' => 'chmn.meaning',
+            ],
         ]);
 
         $this->set(compact(lcfirst($this->name)));

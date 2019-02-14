@@ -15,6 +15,7 @@
 namespace App\Controller;
 
 $allowedOrigins = [
+    "http://localhost:8100",
     "http://quezako.com",
     "https://quezako.com",
 ];
