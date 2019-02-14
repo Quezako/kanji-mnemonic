@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-// use App\Controller\AppController;
+use App\Controller\AppController;
 use Rest\Controller\RestController;
 
 /**
@@ -27,12 +27,14 @@ class IdsController extends RestController
         foreach ($this->request->query as $column => $value) {
             if (in_array($column, $this->{$this->name}->schema()->columns())) {
                 if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
-                    $conditions[] = ["$column LIKE" => "%$value%"];
+                    $conditions[] = ["BINARY $column LIKE" => "%$value%"];
                 } else {
                     $conditions[] = ["$column =" => $value];
                 }
             }
         }
+
+        $conditions[] = ["(LENGTH(ucs) % 2) =" => 0];
 
         ${lcfirst($this->name)} = $this->paginate($this->name, [
 			'conditions' => $conditions,
@@ -40,13 +42,7 @@ class IdsController extends RestController
 
         foreach (${lcfirst($this->name)} as $key => $value) {
             $len = strlen($value->ucs);
-
-            if ($len % 2) {
-                $value->ucs = '?';
-            } else {
-                $value->ucs = iconv('UTF-16BE', 'UTF-8', hex2bin($value->ucs));
-            }
-
+            $value->ucs = iconv('UTF-16BE', 'UTF-8', hex2bin($value->ucs));
             $value->label = $value->ids;
         }
 

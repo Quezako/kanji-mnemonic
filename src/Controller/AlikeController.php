@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-// use App\Controller\AppController;
+use App\Controller\AppController;
 use Rest\Controller\RestController;
 
 /**
@@ -11,6 +11,7 @@ use Rest\Controller\RestController;
  *
  * @method \App\Model\Entity\Alike[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
+// class AlikeController extends AppController
 class AlikeController extends RestController
 {
 
@@ -26,7 +27,7 @@ class AlikeController extends RestController
         foreach ($this->request->query as $column => $value) {
             if (in_array($column, $this->{$this->name}->schema()->columns())) {
                 if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
-                    $conditions[] = ["$column LIKE" => "$value%"];
+                    $conditions[] = ["BINARY alike.$column LIKE" => "$value%"];
                 } else {
                     $conditions[] = ["$column =" => $value];
                 }
@@ -34,8 +35,8 @@ class AlikeController extends RestController
         }
 
         ${lcfirst($this->name)} = $this->paginate($this->name, [
-			'conditions' => $conditions,
-		]);
+            'conditions' => $conditions,
+        ]);
 
         $this->set(compact(lcfirst($this->name)));
     }

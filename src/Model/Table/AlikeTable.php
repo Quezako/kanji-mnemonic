@@ -34,6 +34,12 @@ class AlikeTable extends Table
         $this->setTable('alike');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        // $this->hasOne('Chmn', [
+        //     'className' => 'Chmn',
+        //     'bindingKey' => 'reference',
+        //     'foreignKey' => 'id',
+        // ]);
     }
 
     /**
