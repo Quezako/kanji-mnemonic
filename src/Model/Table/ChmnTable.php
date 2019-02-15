@@ -34,6 +34,12 @@ class ChmnTable extends Table
         $this->setTable('chmn');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->hasOne('Mnemonics', [
+            'className' => 'Mnemonics',
+            'bindingKey' => 'id',
+            'foreignKey' => 'reference',
+        ]);
     }
 
     /**

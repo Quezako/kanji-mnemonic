@@ -48,24 +48,19 @@ class ChmnController extends RestController
 
         ${lcfirst($this->name)} = $this->paginate($this->name, [
             'conditions' => $conditions,
-        ]);
-
-        if (!isset(${lcfirst($this->name)}->toArray()[0])) {
-            unset($conditions[1]);
-        }
-
-        ${lcfirst($this->name)} = $this->paginate($this->name, [
-            'conditions' => $conditions,
             'fields' => [
                 'hanzi',
                 'simplified',
-                'mnemonics',
                 'alike',
                 'meaning',
                 'reference',
                 'ucs' => 'chmn.hanzi',
                 'label' => 'chmn.meaning',
+                // 'mnemonics',
+                'mnemonics' => 'CONCAT("- ", GROUP_CONCAT(mnemonics.mnemonic SEPARATOR "<br />- "))',
+                // 'mnemonics' => 'CONCAT("<ul><li>", GROUP_CONCAT(mnemonics.mnemonic SEPARATOR "</li><li>"), "</li></ul>")',
             ],
+            'contain' => ['Mnemonics']
         ]);
 
         $this->set(compact(lcfirst($this->name)));
