@@ -30,9 +30,9 @@ class ChmnController extends RestController
                     if ($column == 'hanzi') {
                         $conditions[] = [
                             'OR' => [
-                                "BINARY $column LIKE" => "$value%",
-                                "BINARY simplified LIKE" => "$value%",
-                                "BINARY alike LIKE" => "$value%",
+                                "BINARY $column LIKE" => "%$value%",
+                                "BINARY simplified LIKE" => "%$value%",
+                                "BINARY alike LIKE" => "%$value%",
                             ]
                         ];
                     } else {
@@ -54,11 +54,9 @@ class ChmnController extends RestController
                 'alike',
                 'meaning',
                 'reference',
-                'ucs' => 'chmn.hanzi',
-                'label' => 'chmn.meaning',
-                // 'mnemonics',
-                'mnemonics' => 'CONCAT("- ", GROUP_CONCAT(mnemonics.mnemonic SEPARATOR "<br />- "))',
-                // 'mnemonics' => 'CONCAT("<ul><li>", GROUP_CONCAT(mnemonics.mnemonic SEPARATOR "</li><li>"), "</li></ul>")',
+                'ucs' => 'hanzi',
+                'label' => 'meaning',
+                'mnemonics' => 'CONCAT("- ", GROUP_CONCAT(mnemonic SEPARATOR "<br />- "))',
             ],
             'contain' => ['Mnemonics']
         ]);
