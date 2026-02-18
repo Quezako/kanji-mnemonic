@@ -77,6 +77,11 @@ try {
 }
 
 /*
+ * Suppress deprecated notices in PHP 8+ for CakePHP 3.7 compatibility
+ */
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_USER_DEPRECATED);
+
+/*
  * Load an environment local configuration file.
  * You can use a file like app_local.php to provide local overrides to your
  * shared configuration.
