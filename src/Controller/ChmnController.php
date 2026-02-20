@@ -61,7 +61,11 @@ class ChmnController extends AppController
 
         $this->disableAutoRender();
         $this->response = $this->response->withType('application/json');
-        $this->response = $this->response->withStringBody(json_encode(${lcfirst($this->name)}));
+        $this->response = $this->response->withStringBody(json_encode([
+            'result' => [
+                lcfirst($this->name) => ${lcfirst($this->name)}
+            ]
+        ]));
         return $this->response;
     }
 
