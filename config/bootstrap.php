@@ -77,9 +77,9 @@ try {
 }
 
 /*
- * Suppress deprecated notices in PHP 8+ for CakePHP 3.7 compatibility
+ * Suppress deprecated notices in PHP 8+ for CakePHP compatibility
  */
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_USER_DEPRECATED);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 /*
  * Load an environment local configuration file.

@@ -1,0 +1,192 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                   KANJI-BACK DEPLOYMENT GUIDE - FTP ONLY                      ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📋 WHAT YOU NEED:
+  ✓ FTP Access
+  ✓ Apache with PHP (8.0+)
+  ✓ Composer installed on server (or PHP with tar support)
+  ✓ ~100-150 MB free space
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 DEPLOYMENT STEPS:
+
+1️⃣  PREPARE THE ARCHIVE
+   ├─ Wait for the release of kanji-back archive
+   └─ File size: ~15-25 MB (depending on content)
+
+2️⃣  UPLOAD VIA FTP
+   ├─ Upload deploy.php to your domain root
+   ├─ Upload kanji-back-YYYYMMDD-HHMMSS.tar.gz to your domain root
+   └─ Both files should be in the same directory as your other app files
+
+3️⃣  RUN DEPLOYMENT
+   ├─ Open in browser: http://your-domain/deploy.php
+   ├─ Click "🚀 Run Full Deployment"
+   ├─ Wait for process to complete (takes 2-5 minutes)
+   └─ You'll see green checkmarks for each step
+
+4️⃣  DELETE DEPLOY.PHP
+   ├─ ⚠️  IMPORTANT FOR SECURITY!
+   ├─ Delete deploy.php immediately after deployment
+   └─ This file is a security risk if left on server
+
+5️⃣  TEST THE APPLICATION
+   └─ Open: http://your-domain/kanji-back/chmn?hanzi=%E5%92%B2
+   └─ Should return JSON data
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 WHAT GETS DEPLOYED:
+
+Uploaded Archive (~15-25 MB):
+  kanji-back/
+  ├── src/                    (Application code)
+  ├── config/                 (Configuration files)
+  ├── webroot/                (Public files)
+  ├── bin/                    (CLI tools)
+  ├── composer.json
+  ├── composer.lock
+  ├── index.php
+  └── ...
+
+After Extraction & Composer (~100-150 MB):
+  kanji-back/
+  ├── src/
+  ├── config/
+  ├── webroot/
+  ├── vendor/                 (Downloaded during deployment)
+  ├── tmp/                    (Created if missing)
+  ├── logs/                   (Created if missing)
+  └── ...
+
+NOT Included (for space):
+  ✗ .git (version control)
+  ✗ tests/ (test files)
+  ✗ node_modules (not used)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🐛 TROUBLESHOOTING:
+
+❌ "No archive found"
+   └─ Make sure kanji-back-*.tar.gz is uploaded to the same directory as deploy.php
+
+❌ "Extraction failed"
+   └─ Try uploading an already-extracted folder instead of the tar.gz file
+   └─ Or contact your hosting provider to enable tar/gzip
+
+❌ "Composer not found"
+   └─ Manual step: SSH to server and run:
+      cd /path/to/kanji-back
+      composer install --no-dev --optimize-autoloader
+
+❌ "Permission denied on tmp/ or logs/"
+   └─ FTP user needs write access
+   └─ Contact hosting provider or use FTP client to set permissions to 775
+
+❌ Blank page / 500 error
+   └─ Check logs: Look in kanji-back/tmp/logs/error.log
+   └─ Verify PHP 8.0+ is installed
+   └─ Check that .htaccess is properly uploaded to webroot/
+
+❌ JSON returns HTML instead of data
+   └─ Check .htaccess in webroot/ for mod_rewrite settings
+   └─ Verify the route matches: /kanji-back/chmn?hanzi=...
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔐 SECURITY CHECKLIST:
+
+After deployment, ensure:
+
+✓ Delete deploy.php immediately
+✓ Set file permissions:
+   - src/          (755)
+   - config/       (755)
+   - webroot/      (755)
+   - tmp/          (775)
+   - logs/         (775)
+   - vendor/       (755)
+
+✓ Verify .env.local (if used) is NOT in version control
+✓ Check config/app.php for debug settings
+   - Should be false in production
+✓ Regularly monitor logs for errors
+✓ Keep dependencies updated: composer update --no-dev
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📞 API ENDPOINTS (After deployment):
+
+GET /kanji-back/chmn?hanzi=咲
+   Returns: Hanzi/Chinese character data
+
+GET /kanji-back/kanji?kanji=学
+   Returns: Kanji character data
+
+GET /kanji-back/kanji-meanings
+   Returns: Kanji meaning translations
+
+GET /kanji-back/kanji-readings
+   Returns: Kanji reading information
+
+GET /kanji-back/kanji-codes
+   Returns: Unicode and code information
+
+GET /kanji-back/alike
+   Returns: Similar characters
+
+GET /kanji-back/ids
+   Returns: IDS composition data
+
+GET /kanji-back/mnemonics
+   Returns: Memory aid mnemonics
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💾 BACKUPS:
+
+The deployment script automatically:
+  ✓ Creates a backup if deployment already exists
+  ✓ Backup location: kanji-back.backup.TIMESTAMP/
+
+To restore from backup:
+  1. Delete current kanji-back directory
+  2. Rename kanji-back.backup.TIMESTAMP to kanji-back
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❓ FREQUENTLY ASKED QUESTIONS:
+
+Q: How long does deployment take?
+A: Typically 2-5 minutes depending on server speed and Composer dependency count
+
+Q: Do I need to restart Apache?
+A: No, PHP changes are loaded automatically
+
+Q: Can I update the application later?
+A: Yes, just repeat the deployment steps with a new archive
+
+Q: What if I delete deploy.php by mistake?
+A: Just upload it again from the kanji-back repo
+
+Q: Can I automate this deployment?
+A: Yes, if you have shell access. Check the deploy.sh or deploy_ftp.py scripts
+
+Q: How do I know if deployment succeeded?
+A: Check if you get JSON data from the API endpoints
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📧 SUPPORT:
+
+For issues, check:
+  1. Server logs: tmp/logs/error.log
+  2. PHP error log: Check your hosting control panel
+  3. This deployment guide
+  4. GitHub issues: https://github.com/Quezako/kanji-mnemonic
+
+Version: CakePHP 4.4 + PHP 8.0+
+Updated: 2026-02-20
