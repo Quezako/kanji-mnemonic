@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Rest\Controller\RestController;
 
 /**
  * Chmn Controller
@@ -11,8 +10,7 @@ use Rest\Controller\RestController;
  *
  * @method \App\Model\Entity\Chmn[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-// class ChmnController extends AppController
-class ChmnController extends RestController
+class ChmnController extends AppController
 {
 
     /**
@@ -24,9 +22,9 @@ class ChmnController extends RestController
     {
         $conditions = [];
 
-        foreach ($this->request->query as $column => $value) {
-            if (in_array($column, $this->{$this->name}->schema()->columns())) {
-                if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
+        foreach ($this->request->getQuery() as $column => $value) {
+            if (in_array($column, $this->{$this->name}->getSchema()->columns())) {
+                if ($this->{$this->name}->getSchema()->typeMap()[$column] === 'string') {
                     if ($column == 'hanzi') {
                         $conditions[] = [
                             'OR' => [
@@ -61,7 +59,10 @@ class ChmnController extends RestController
             'contain' => ['Mnemonics']
         ]);
 
-        $this->set(compact(lcfirst($this->name)));
+        $this->disableAutoRender();
+        $this->response = $this->response->withType('application/json');
+        echo json_encode(${lcfirst($this->name)});
+        return;
     }
 
     /**

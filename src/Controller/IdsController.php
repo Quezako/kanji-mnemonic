@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Rest\Controller\RestController;
+
 
 /**
  * Ids Controller
@@ -12,7 +12,7 @@ use Rest\Controller\RestController;
  * @method \App\Model\Entity\Id[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 // class IdsController extends AppController
-class IdsController extends RestController
+class IdsController extends AppController
 {
 
     /**
@@ -24,9 +24,9 @@ class IdsController extends RestController
     {
         $conditions = [];
 
-        foreach ($this->request->query as $column => $value) {
-            if (in_array($column, $this->{$this->name}->schema()->columns())) {
-                if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
+        foreach ($this->request->getQuery() as $column => $value) {
+            if (in_array($column, $this->{$this->name}->getSchema()->columns())) {
+                if ($this->{$this->name}->getSchema()->typeMap()[$column] === 'string') {
                     $conditions[] = ["BINARY $column LIKE" => "%$value%"];
                 } else {
                     $conditions[] = ["$column =" => $value];
@@ -46,7 +46,10 @@ class IdsController extends RestController
             $value->label = $value->ids;
         }
 
-        $this->set(compact(lcfirst($this->name)));
+        $this->disableAutoRender();
+        $this->response = $this->response->withType('application/json');
+        echo json_encode(${lcfirst($this->name)});
+        return;
     }
 
     /**
