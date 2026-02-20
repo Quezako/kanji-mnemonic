@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Rest\Controller\RestController;
+
 
 /**
  * Alike Controller
@@ -12,7 +12,7 @@ use Rest\Controller\RestController;
  * @method \App\Model\Entity\Alike[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 // class AlikeController extends AppController
-class AlikeController extends RestController
+class AlikeController extends AppController
 {
 
     /**
@@ -22,23 +22,33 @@ class AlikeController extends RestController
      */
     public function index()
     {
-        $conditions = [];
+        try {
+            $conditions = [];
 
-        foreach ($this->request->query as $column => $value) {
-            if (in_array($column, $this->{$this->name}->schema()->columns())) {
-                if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
-                    $conditions[] = ["BINARY alike.$column LIKE" => "$value%"];
-                } else {
-                    $conditions[] = ["$column =" => $value];
+            foreach ($this->request->getQuery() as $column => $value) {
+                if (in_array($column, $this->{$this->name}->getSchema()->columns())) {
+                    if ($this->{$this->name}->getSchema()->typeMap()[$column] === 'string') {
+                        $conditions[] = ["Alike.$column LIKE" => "$value%"];
+                    } else {
+                        $conditions[] = ["Alike.$column =" => $value];
+                    }
                 }
             }
+
+            ${lcfirst($this->name)} = $this->paginate($this->name, [
+                'conditions' => $conditions,
+            ]);
+
+            $this->disableAutoRender();
+            $this->response = $this->response->withType('application/json');
+            echo json_encode(${lcfirst($this->name)});
+            return;
+        } catch (\Exception $e) {
+            $this->disableAutoRender();
+            $this->response = $this->response->withType('application/json');
+            echo json_encode(['error' => $e->getMessage()]);
+            return;
         }
-
-        ${lcfirst($this->name)} = $this->paginate($this->name, [
-            'conditions' => $conditions,
-        ]);
-
-        $this->set(compact(lcfirst($this->name)));
     }
 
     /**

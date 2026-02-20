@@ -97,6 +97,12 @@ if (Configure::read('debug')) {
     Configure::write('Cache._cake_core_.duration', '+2 minutes');
     // disable router cache during development
     Configure::write('Cache._cake_routes_.duration', '+2 seconds');
+    
+    // Use NullEngine for all caches in debug mode to avoid permission warnings
+    Configure::write('Cache.default.className', 'Cake\Cache\Engine\NullEngine');
+    Configure::write('Cache._cake_core_.className', 'Cake\Cache\Engine\NullEngine');
+    Configure::write('Cache._cake_model_.className', 'Cake\Cache\Engine\NullEngine');
+    Configure::write('Cache._cake_routes_.className', 'Cake\Cache\Engine\NullEngine');
 }
 
 /*

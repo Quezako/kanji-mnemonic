@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Rest\Controller\RestController;
+
 
 /**
  * Mnemonics Controller
@@ -12,7 +12,7 @@ use Rest\Controller\RestController;
  * @method \App\Model\Entity\Mnemonic[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 // class MnemonicsController extends AppController
-class MnemonicsController extends RestController
+class MnemonicsController extends AppController
 {
 
     /**
@@ -24,12 +24,12 @@ class MnemonicsController extends RestController
     {
         $conditions = [];
 
-        foreach ($this->request->query as $column => $value) {
-            if (in_array($column, $this->{$this->name}->schema()->columns())) {
-                if ($this->{$this->name}->schema()->typeMap()[$column] === 'string') {
-                    $conditions[] = ["BINARY alike.$column LIKE" => "$value%"];
+        foreach ($this->request->getQuery() as $column => $value) {
+            if (in_array($column, $this->{$this->name}->getSchema()->columns())) {
+                if ($this->{$this->name}->getSchema()->typeMap()[$column] === 'string') {
+                    $conditions[] = ["Mnemonics.$column LIKE" => "$value%"];
                 } else {
-                    $conditions[] = ["$column =" => $value];
+                    $conditions[] = ["Mnemonics.$column =" => $value];
                 }
             }
         }
@@ -38,7 +38,10 @@ class MnemonicsController extends RestController
             'conditions' => $conditions,
         ]);
 
-        $this->set(compact(lcfirst($this->name)));
+        $this->disableAutoRender();
+        $this->response = $this->response->withType('application/json');
+        echo json_encode(${lcfirst($this->name)});
+        return;
     }
 
     /**
