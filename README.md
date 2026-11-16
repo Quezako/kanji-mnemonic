@@ -1,5 +1,5 @@
-# kanji-mnemonic
-Back-end for the kanji-mnemonic app.
+# kanji-back
+Back-end for the kanji-memorize app.
 This is a simple RESTfull API generated with CakePHP Bake.
 
 Database from einaert Albrecht: http://www.rtega.be/chmn/
